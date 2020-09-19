@@ -127,9 +127,9 @@
     \hypertarget{\templabel}{}%
   \else%
     \ifonline%
-      \gdef\temppath{\currreference/#2/#3/ref.pdf}%
+      \gdef\temppath{\currreference/#2/#3/tree_online.pdf}%
     \else%
-      \gdef\temppath{#2/#3/ref.pdf}%
+      \gdef\temppath{#2/#3/tree.pdf}%
     \fi%
   \fi%
   \lnfmt[#1]{\temppath}{#4}{\csname #2d\endcsname}{\refnum}%
@@ -253,7 +253,7 @@
 % --- reference path formatting ---
 \def\getrelpathln#1#2{%
   \ifonline%
-    \def#2{#1/ref.pdf}%
+    \def#2{#1/tree_online.pdf}%
   \else%
     \readcmd{python \root/scripts/relpathln.py "\curr" "\root/#1"}{#2}%
   \fi%
