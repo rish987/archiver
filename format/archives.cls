@@ -99,7 +99,7 @@
     \hyperlink{#1}{#2}%
     \else%
     \ifonline%
-      \href[page=1]{https://rish987.github.io/files/archives/tree/#1}{#2}%
+      \href[page=1]{https://rish987.github.io/files/archives/tree_online/#1}{#2}%
     \else%
       \href[page=1]{#1}{#2}%
     \fi%

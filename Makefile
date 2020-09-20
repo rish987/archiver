@@ -10,13 +10,11 @@ SHELL := /bin/bash
 source_list = $(shell cd ${PROJECTS_DIR} && find $(1) -type f -a \( ! -regex '.*/\..*' \))
 build_source_list = $(addprefix ${BUILD_SOURCE_DIR}/,$(call source_list,$(1)))
 
-get_dir_list = $(subst .tex,,$(shell cd ${PROJECTS_DIR}/$(2) && { find ./ -type d -name "$(1)" | xargs -i find "{}" -maxdepth 1 -mindepth 1 | cut -f2- -d/; }))
+get_dir_list = $(shell cd ${PROJECTS_DIR}/$(1) && { find ./ -type d \( -name "proof" -o -name "note" -o -name "topic" -o -name "definition" \) | xargs -i find "{}" -maxdepth 1 -mindepth 1 | cut -f2- -d/; })
 
-get_out_list = $(addprefix ${OUTPUT_DIR}/$(3)/$(2)/,$(addsuffix /$(4),$(call get_dir_list,$(1),$(2))))
-get_defs_list = $(addsuffix /defs.pdf,$(call get_dir_list,$(1)))
+get_out_list = $(addprefix ${OUTPUT_DIR}/$(2)/$(1)/,$(addsuffix /$(2).pdf,$(call get_dir_list,$(1))))
 
-
-get_tree_list = ${OUTPUT_DIR}/$(2)/$(1)/$(3) $(call get_out_list,proof,$(1),$(2),$(3)) $(call get_out_list,note,$(1),$(2),$(3)) $(call get_out_list,topic,$(1),$(2),$(3)) $(call get_out_list,definition,$(1),$(2),$(3))
+get_tree_list = ${OUTPUT_DIR}/$(2)/$(1)/$(2).pdf $(call get_out_list,$(1),$(2))
 
 test:
 	echo $(addprefix ${PROJECTS_DIR}/,$(addsuffix /*.mk,${PROJECTS}))
@@ -30,17 +28,19 @@ BUILD_WRAPPERS := $(addsuffix .m4,$(addprefix ${BUILD_WRAPPER_DIR}/,tree tree_on
 
 BUILD_FORMAT := $(addprefix ${BUILD_SOURCE_DIR}/scripts/,defs_inheritance.sh relpathln.py defs_inheritance.py path_fmt.py format_defs.sh) ${BUILD_SOURCE_DIR}/archives.cls
 
-tree : $(foreach project,${PROJECTS},$(call get_tree_list,${project},tree,tree.pdf))
-tree_online : $(foreach project,${PROJECTS},$(call get_tree_list,${project},tree_online,tree_online.pdf))
-defs : $(foreach project,${PROJECTS},$(call get_tree_list,${project},defs,defs.pdf))
+#.PHONY : tree tree_online defs full full_compact archive/tree demo/tree archive/tree_online archive/tree_online demo/tree_online
+
+tree : $(foreach project,${PROJECTS},$(call get_tree_list,${project},tree))
+tree_online : $(foreach project,${PROJECTS},$(call get_tree_list,${project},tree_online))
+defs : $(foreach project,${PROJECTS},$(call get_tree_list,${project},defs))
 full : $(addsuffix /full.pdf,$(addprefix ${OUTPUT_DIR}/full/,${PROJECTS}))
 full_compact : $(addsuffix /full_compact.pdf,$(addprefix ${OUTPUT_DIR}/full_compact/,${PROJECTS}))
 
 .SECONDEXPANSION :
 
-$(addsuffix /tree,${PROJECTS}) : $$(call get_tree_list,$$(subst /,,$$(dir $$@)),tree,tree.pdf)
-$(addsuffix /tree_online,${PROJECTS}) : $$(call get_tree_list,$$(subst /,,$$(dir $$@)),tree_online,tree_online.pdf)
-$(addsuffix /defs,${PROJECTS}) : $$(call get_tree_list,$$(subst /,,$$(dir $$@)),defs,defs.pdf)
+$(addsuffix /tree,${PROJECTS}) : $$(call get_tree_list,$$(subst /,,$$(dir $$@)),tree)
+$(addsuffix /tree_online,${PROJECTS}) : $$(call get_tree_list,$$(subst /,,$$(dir $$@)),tree_online)
+$(addsuffix /defs,${PROJECTS}) : $$(call get_tree_list,$$(subst /,,$$(dir $$@)),defs)
 
 BASENAME = $(basename $(notdir $@))
 WRAPPER = ${BUILD_WRAPPER_DIR}/${BASENAME}.m4
