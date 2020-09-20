@@ -1,9 +1,9 @@
-PROJECTS_DIR := projects
+PROJECTS_DIR := archives
 OUTPUT_DIR := output
 FORMAT_DIR := format
 BUILD_DIR := build
 BUILD_SOURCE_DIR := ${BUILD_DIR}/src
-PROJECTS := $(shell find projects -maxdepth 1 -mindepth 1 -type d | cut -f2- -d/)
+PROJECTS := $(shell find ${PROJECTS_DIR} -maxdepth 1 -mindepth 1 -type d | cut -f2- -d/)
 
 source_list = $(shell cd ${PROJECTS_DIR} && find $(1) -type f -a \( ! -regex '.*/\..*' \))
 build_source_list = $(addprefix ${BUILD_SOURCE_DIR}/,$(call source_list,$(1)))
