@@ -11,7 +11,6 @@
 \RequirePackage{amsmath}
 \RequirePackage{amsfonts}
 \RequirePackage{xcolor}
-\RequirePackage{tikz}
 \RequirePackage{calc}
 \RequirePackage{xintexpr}
 \RequirePackage[many]{tcolorbox}
@@ -23,8 +22,6 @@
 \RequirePackage{xifthen}
 \RequirePackage[top=0.5in, bottom=0.7in, left=1in, right=1in, includeheadfoot, headsep=20pt]{geometry}
 \setlength{\headheight}{17pt}
-
-\usetikzlibrary{calc}
 
 \makeatletter
 \newcommand\mynobreakpar{\par\nobreak\@afterheading} 

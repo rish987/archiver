@@ -44,17 +44,19 @@ $(addsuffix /defs,${PROJECTS}) : $$(call get_tree_list,$$(subst /,,$$(dir $$@)),
 
 BASENAME = $(basename $(notdir $@))
 WRAPPER = ${BUILD_WRAPPER_DIR}/${BASENAME}.m4
+type = $(shell echo $* | cut -d'/' -f1)
+preamble = ${BUILD_SOURCE_DIR}/${type}/preamble.tex
 
 ${OUTPUT_DIR}/tree/%/tree.pdf ${OUTPUT_DIR}/tree_online/%/tree_online.pdf ${OUTPUT_DIR}/defs/%/defs.pdf : $$(addprefix $${BUILD_SOURCE_DIR}/,$$(shell scripts/get_deps.sh $$* $${BASENAME})) $${WRAPPER} ${BUILD_SOURCE_DIR}/archives.cls ${BUILD_FORMAT} | ${BUILD_DIR} ${BUILD_SOURCE_DIR}
 	find ${BUILD_DIR} -maxdepth 1 -type f | xargs rm -f
-	m4 -Dinput_ref="$*" ${WRAPPER} > ${BUILD_DIR}/${BASENAME}.tex
+	m4 -Da_preamble="${preamble}" -Dinput_ref="$*" ${WRAPPER} > ${BUILD_DIR}/${BASENAME}.tex
 	cd ${BUILD_DIR} && pdflatex --halt-on-error --shell-escape ${BASENAME}.tex
 	mkdir -p $(dir $@) && cp ${BUILD_DIR}/${BASENAME}.pdf $@
 
 ${OUTPUT_DIR}/full/%/full.pdf ${OUTPUT_DIR}/full_compact/%/full_compact.pdf: $$(call build_source_list,$$*) $${WRAPPER} ${BUILD_SOURCE_DIR}/archives.cls ${BUILD_FORMAT} | ${BUILD_DIR} ${OUTPUT_DIR} ${BUILD_SOURCE_DIR}
 	find ${BUILD_DIR} -maxdepth 1 -type f | xargs rm -f
 	( echo '\includereference{$*}'; cd ${BUILD_SOURCE_DIR}; i=1; while results=$$(find $* -mindepth $$i -maxdepth $$i -type d -a \( -name proof -o -name note -o -name topic -o -name definition \) | xargs -i find "{}" -maxdepth 1 -mindepth 1) && [[ -n $$results ]]; do for path in $$results; do echo "\\includereference{$$path}"; done; (( i += 2 )); done; ) > ${F_SRC}
-	m4 -Dinput=${F_SRC} ${WRAPPER} > ${BUILD_DIR}/${BASENAME}.tex
+	m4 -Da_preamble="${preamble}" -Dinput=${F_SRC} ${WRAPPER} > ${BUILD_DIR}/${BASENAME}.tex
 	cd ${BUILD_DIR} && latexmk --halt-on-error --pdf --shell-escape ${BASENAME}.tex
 	mkdir -p $(dir $@) && cp ${BUILD_DIR}/${BASENAME}.pdf $@
 

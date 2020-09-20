@@ -32,7 +32,7 @@ function Followln()
     let rtype = rlist[1]
     let rname = rlist[2]
     let rpath = expand('%:h')
-    silent let output_full = trim(system("./scripts/follow.sh " . rtype . " " . rname . " ./" . rpath))
+    silent let output_full = trim(system("./scripts/follow.sh " . rtype . " " . rname . " ./" . rpath . " " . g:archive))
     if v:shell_error == 0
         silent let output = split(output_full)
         wincmd b
@@ -110,24 +110,15 @@ func! StoreWinBuff()
     let g:window_buffers_idx[winid] = currind
 endfunc
 
-function FollowPDF()
+function FollowPDF(type)
     let rpath = expand('%:h')
-    call system("./scripts/follow_pdf.sh " . rpath)   
-endfunction
-
-function FollowDefs()
-    let rpath = expand('%:h')
-    call system("./scripts/follow_defs.sh " . rpath)   
-endfunction
-
-function FormatDefs()
-    let rpath = expand('%:h')
-    call system("./scripts/format_pdf.sh " . rpath . " defs")
-endfunction
-
-function FormatPDF()
-    let rpath = expand('%:h')
-    call system("./scripts/format_pdf.sh " . rpath . " ref")
+    let pdf = trim(system("./scripts/get_pdf.sh " . rpath . " " . a:type . " " . g:archive))
+    if exists("g:archives_pdf_cmd")
+        echo g:archives_pdf_cmd . " " . pdf . " &"
+        call system(g:archives_pdf_cmd . " " . pdf . " &")
+    else
+        echo "g:archives_pdf_cmd undefined."
+    endif
 endfunction
 
 map <leader>f :call Followln()<CR>
@@ -135,19 +126,31 @@ map <leader>gf :call Followfile()<CR>
 map <leader>H :call Backln()<CR>
 map <leader>L :call Forwardln()<CR>
 map <leader>c :call ChangeDef()<CR>
-map <leader>p :call FollowPDF()<CR>
-map <leader>d :call FollowDefs()<CR>
-map <leader>P :call FormatPDF()<CR>
-map <leader>D :call FormatDefs()<CR>
+map <leader>p :call FollowPDF("tree")<CR>
+map <leader>d :call FollowPDF("defs")<CR>
 
 map <leader>s :set hlsearch<CR>/\\refln[a-zA-Z]*{\w*}{[a-zA-Z_/]\{-}}/e<CR>
 
-edit src/archives/ref.tex
+let options = system("find archives -maxdepth 1 -mindepth 1 -type d | cut -f2- -d/")
+let archives = split(options)
+
+let archives_fmt = []
+let i = 1
+for archive in archives
+    let archives_fmt = archives_fmt + [i . ": " . archive]
+    let i = i + 1
+endfor
+
+let choice = inputlist(["Select archive: "] + archives_fmt)
+let choice = choice - 1
+let g:archive = archives[choice]
+let archive_path = "archives/" . g:archive
+edit `=archive_path . "/ref.tex"`
 call InitWinBuff()
-15split src/archives/defs.tex
+15split `=archive_path . "/defs.tex"`
 call InitWinBuff()
 set winfixheight
 wincmd b
-tabedit src/archives.cls
 
+tabedit `=archive_path . "/preamble.tex"`
 tabfirst

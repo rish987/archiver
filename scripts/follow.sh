@@ -1,7 +1,8 @@
 TYPE="$1"
 NAME="$2"
 PARENT_DIR=`realpath "$3"`
-while ! scripts/is_root.sh $PARENT_DIR; do
+ARCHIVE="$4"
+while ! scripts/is_root.sh $PARENT_DIR $ARCHIVE; do
     PARENT_DIR=`dirname $PARENT_DIR`
 done
 

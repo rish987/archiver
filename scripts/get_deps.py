@@ -15,4 +15,6 @@ for ind in range(len(dirs)):
 if (this_type == "tree") or (this_type == "tree_online"):
     deps += "{}/ref.tex ".format(path)
 
+deps += "{}/preamble.tex ".format(dirs[0])
+
 print(deps, end='')
