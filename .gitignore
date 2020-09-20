@@ -25,3 +25,4 @@ __*
 /output/
 !/scripts/templates
 projects/*
+!/projects/demo

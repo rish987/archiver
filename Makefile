@@ -60,6 +60,8 @@ ${BUILD_SOURCE_DIR}/% : $${PROJECTS_DIR}/$$(shell echo "$$@" | cut -d'/' -f3-) |
 	mkdir -p $(dir $@)
 	cp $< $(dir $@)
 
+.PRECIOUS : ${BUILD_SOURCE_DIR}/%
+
 ${BUILD_FORMAT} : $${FORMAT_DIR}/$$(shell echo "$$@" | cut -d'/' -f3-) | ${BUILD_DIR}
 	mkdir -p $(dir $@)
 	cp $< $(dir $@)
