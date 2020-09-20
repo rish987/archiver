@@ -5,6 +5,8 @@ BUILD_DIR := build
 BUILD_SOURCE_DIR := ${BUILD_DIR}/src
 PROJECTS := $(shell find ${PROJECTS_DIR} -maxdepth 1 -mindepth 1 -type d | cut -f2- -d/)
 
+SHELL := /bin/bash
+
 source_list = $(shell cd ${PROJECTS_DIR} && find $(1) -type f -a \( ! -regex '.*/\..*' \))
 build_source_list = $(addprefix ${BUILD_SOURCE_DIR}/,$(call source_list,$(1)))
 
@@ -51,7 +53,7 @@ ${OUTPUT_DIR}/tree/%/tree.pdf ${OUTPUT_DIR}/tree_online/%/tree_online.pdf ${OUTP
 
 ${OUTPUT_DIR}/full/%/full.pdf ${OUTPUT_DIR}/full_compact/%/full_compact.pdf: $$(call build_source_list,$$*) $${WRAPPER} ${BUILD_SOURCE_DIR}/archives.cls ${BUILD_FORMAT} | ${BUILD_DIR} ${OUTPUT_DIR} ${BUILD_SOURCE_DIR}
 	find ${BUILD_DIR} -maxdepth 1 -type f | xargs rm -f
-	{ echo "\includereference{$*}"; for path in $$(cd ${BUILD_SOURCE_DIR} && find $* -type d -a \( -name proof -o -name note -o -name topic -o -name definition \) | xargs -i find "{}" -maxdepth 1 -mindepth 1); do echo "\includereference{$$path}"; done; } > ${F_SRC}
+	( echo '\includereference{$*}'; cd ${BUILD_SOURCE_DIR}; i=1; while results=$$(find $* -mindepth $$i -maxdepth $$i -type d -a \( -name proof -o -name note -o -name topic -o -name definition \) | xargs -i find "{}" -maxdepth 1 -mindepth 1) && [[ -n $$results ]]; do for path in $$results; do echo "\\includereference{$$path}"; done; (( i += 2 )); done; ) > ${F_SRC}
 	m4 -Dinput=${F_SRC} ${WRAPPER} > ${BUILD_DIR}/${BASENAME}.tex
 	cd ${BUILD_DIR} && latexmk --halt-on-error --pdf --shell-escape ${BASENAME}.tex
 	mkdir -p $(dir $@) && cp ${BUILD_DIR}/${BASENAME}.pdf $@
