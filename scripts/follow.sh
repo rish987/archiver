@@ -1,3 +1,4 @@
+ROOT=`git rev-parse --show-toplevel | tr -d "\n"`
 TYPE="$1"
 NAME="$2"
 PARENT_DIR=`realpath "$3"`
@@ -20,11 +21,9 @@ DEFS_FILENAME="$NEW_PATH/defs.tex"
 FILENAMES="$REF_FILENAME $DEFS_FILENAME"
 
 if [[ ! -d "$NEW_PATH" ]]; then
-    mkdir -p "$NEW_PATH"
-    cp "$TEMPLATE" "$REF_FILENAME"
-    touch "$DEFS_FILENAME"
+    currref=`realpath --relative-to=$ROOT/archives $PARENT_DIR`
+    scripts/new_ref.sh $currref $TYPE $NAME $ARCHIVE
 fi
 
-ROOT=`git rev-parse --show-toplevel | tr -d "\n"`
 FILENAMES=`realpath --relative-to=$ROOT $FILENAMES`
 echo -n $FILENAMES
