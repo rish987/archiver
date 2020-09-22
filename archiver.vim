@@ -39,9 +39,11 @@ function Followln()
         " save buffer after following link to ensure only buffers that had
         " links are added
         call StoreWinBuff()
+        let g:window_buffers_idx[win_getid()] += 1
         edit `=output[0]`
         wincmd t
         call StoreWinBuff()
+        let g:window_buffers_idx[win_getid()] += 1
         edit `=output[1]`
         wincmd b
     else
@@ -92,9 +94,11 @@ endfunction
 
 let g:window_buffers = {}
 let g:window_buffers_idx = {}
+let g:hist_saved = {}
 func! InitWinBuff()
     let g:window_buffers[win_getid()] = []
     let g:window_buffers_idx[win_getid()] = 0
+    let g:hist_saved[win_getid()] = []
 endfunc
 
 func! StoreWinBuff()
@@ -103,11 +107,11 @@ func! StoreWinBuff()
     " if in history, delete next buffers in this window
     if currind < (len(g:window_buffers[winid]) - 1)
         call remove(g:window_buffers[winid], currind + 1, len(g:window_buffers[winid]) - 1)
-    else " otherwise, add to history
+    " if at tail of history, do nothing
+    " otherwise, add to history
+    elseif currind > (len(g:window_buffers[winid]) - 1)
         call add(g:window_buffers[winid],bufname("%"))
     endif
-    let currind += 1
-    let g:window_buffers_idx[winid] = currind
 endfunc
 
 function FollowPDF(type)
@@ -121,6 +125,58 @@ function FollowPDF(type)
     endif
 endfunction
 
+function SelHistWin(choice)
+    let winid = win_getid()
+    let g:window_buffers[winid] = copy(g:hist_saved[winid][a:choice])
+    let g:window_buffers_idx[winid] = len(g:window_buffers[winid]) - 1
+    edit `=g:window_buffers[winid][g:window_buffers_idx[winid]]`
+endfunction
+
+function FormatFilename(path)
+    let ref = trim(system("dirname `echo " . a:path . "` | cut -d/ -f2-"))
+    let filename = trim(system("basename `echo " . a:path . "`"))
+    return ref . " (" . filename . ")"
+endfunction
+
+function SelHist()
+    wincmd b
+    let sel_list = []
+    let i = 1
+    for history in g:hist_saved[win_getid()]
+        let formatted = FormatFilename(history[-1])
+        call add(sel_list, i . ": " . formatted)
+        let i = i + 1
+    endfor
+
+    let choice = inputlist(["Select history: "] + sel_list)
+    let choice = choice - 1
+
+    wincmd b
+    call SelHistWin(choice)
+    wincmd t
+    call SelHistWin(choice)
+    wincmd b
+endfunction
+
+function SaveHist()
+    wincmd b
+    call SaveHistWin()
+    wincmd t
+    call SaveHistWin()
+    wincmd b
+    echo "Saved " . FormatFilename(g:hist_saved[win_getid()][-1][-1])
+endfunction
+
+function SaveHistWin()
+    let winid = win_getid()
+    let currind = g:window_buffers_idx[winid]
+    if currind == len(g:window_buffers[winid])
+        call add(g:window_buffers[winid],bufname("%"))
+    endif
+    let this_hist = copy(g:window_buffers[winid][0:currind])
+    call add(g:hist_saved[winid],this_hist)
+endfunction
+
 map <leader>f :call Followln()<CR>
 map <leader>gf :call Followfile()<CR>
 map <leader>H :call Backln()<CR>
@@ -128,6 +184,8 @@ map <leader>L :call Forwardln()<CR>
 map <leader>c :call ChangeDef()<CR>
 map <leader>p :call FollowPDF("tree")<CR>
 map <leader>d :call FollowPDF("defs")<CR>
+map <leader>x :call SaveHist()<CR>
+map <leader>X :call SelHist()<CR>
 
 map <leader>s :set hlsearch<CR>/\\refln[a-zA-Z]*{\w*}{[a-zA-Z_/]\{-}}/e<CR>
 
