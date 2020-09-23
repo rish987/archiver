@@ -1,12 +1,20 @@
 function Followfile() 
-  let rpos = searchpos('rinclude', 'bn')
-  if rpos[0] == line(".")
-    let rlist = matchlist(strpart(getline('.'), rpos[1] + 1), '{\(.\{-}\)}')
-    let rpath = expand('%:h')
-    let rtail = rlist[1]
-    let rpathtail = rpath . "/" . rtail . ".tex"
-    edit `=rpathtail`
-  endif
+    wincmd b
+    call StoreWinBuff()
+    let g:window_buffers_idx[win_getid()] += 1
+    wincmd t
+    call StoreWinBuff()
+    let g:window_buffers_idx[win_getid()] += 1
+    wincmd b
+
+    let rpos = searchpos('rinclude', 'bn')
+    if rpos[0] == line(".")
+        let rlist = matchlist(strpart(getline('.'), rpos[1] + 1), '{\(.\{-}\)}')
+        let rpath = expand('%:h')
+        let rtail = rlist[1]
+        let rpathtail = rpath . "/" . rtail . ".tex"
+        edit `=rpathtail`
+    endif
 endfunction
 
 function ChangeDef()
@@ -150,6 +158,9 @@ function SelHist()
 
     let choice = inputlist(["Select history: "] + sel_list)
     let choice = choice - 1
+    if (choice < 0) || (choice >= len(sel_list))
+        return
+    endif
 
     wincmd b
     call SelHistWin(choice)
@@ -201,6 +212,10 @@ endfor
 
 let choice = inputlist(["Select archive: "] + archives_fmt)
 let choice = choice - 1
+if (choice < 0) || (choice >= len(archives_fmt))
+    quit
+endif
+
 let g:archive = archives[choice]
 let archive_path = "archives/" . g:archive
 edit `=archive_path . "/ref.tex"`
