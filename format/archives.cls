@@ -35,10 +35,6 @@
 \newcommand{\listof}[2]{\listgen{#1}{1}{#2}}
 \newcommand{\listn}[1]{\listof{#1}{n}}
 
-\def\P{{\rm Pr}}
-\def\R{\mathbb R}
-\def\E{\mathbb E}
-
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
