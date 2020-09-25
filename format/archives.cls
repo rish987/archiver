@@ -43,6 +43,7 @@
 
 \def\placeholder#1{\hskip 0pt {\rm\color{gray}{[#1]}}}
 \def\todo{\placeholder{TODO}}
+\def\ntodo#1{\placeholder{TODO: #1}}
 \def\mtodo{\text{\todo}}
 
 \def\ctext#1{$$\text{#1}$$}
