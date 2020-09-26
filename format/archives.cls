@@ -50,10 +50,12 @@
 % ---
 
 \newif\iffull
+\newif\ifrenv
 \newif\ifonline
 \newif\ifcompact
 \newif\ifln
 \fullfalse
+\renvfalse
 \compactfalse
 \lnfalse
 
@@ -225,15 +227,16 @@
   \pagebreak[3]
 }
 
-\def\refenvl#1#2#3{{\bnosp\inheritdefs{\curr/#1/#2}\enosp{}#3}}
+\def\refenvl#1#2#3{{\bnosp\inheritdefs{\curr/#1/#2}\enosp{}\renvtrue #3}}
 
 \newenvironment{refenv}[2]
-{
-  \bgroup
-  \inheritdefs{\curr/#1/#2}
+{%
+  \renvtrue%
+  \bgroup%
+  \inheritdefs{\curr/#1/#2}%
 }
-{
-  \egroup
+{%
+  \egroup%
 }
 
 \NewEnviron{ralign}{%
@@ -384,8 +387,8 @@
 \def\enm#1{\ensuremath{{#1}}}
 
 \def\rellrgf#1#2#3#4#5{\relrgf{\rellgf{#1}{#2}{#3}}{#4}{#5}}
-\def\rellgf#1#2#3{\underset{\raisebox{#3}{\makebox[0pt]{\scriptsize \tt \colorbox{blue!30}{#2}}}}{#1}}
-\def\relrgf#1#2#3{\overset{\raisebox{#3}{\makebox[0pt]{\scriptsize \tt \colorbox{___gray}{#2}}}}{#1}}
+\def\rellgf#1#2#3{\ifrenv#1\else\underset{\raisebox{#3}{\makebox[0pt]{\scriptsize \tt \colorbox{blue!30}{#2}}}}{#1}\fi}
+\def\relrgf#1#2#3{\ifrenv#1\else\overset{\raisebox{#3}{\makebox[0pt]{\scriptsize \tt \colorbox{___gray}{#2}}}}{#1}\fi}
 \def\rellf#1#2{\rellgf{#1}{#2}{-5pt}}
 \def\relrf#1#2{\relrgf{#1}{#2}{8pt}}
 \def\rellrf#1#2#3{\relrf{\rellf{#1}{#2}}{#3}}
