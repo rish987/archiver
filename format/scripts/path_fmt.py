@@ -18,9 +18,9 @@ for dir_i, dir in enumerate(path_split):
         this_path = ref_path = "/".join(path_split[0:dir_i + 1])
         if dir_i < len(path_split) - 1:
             ref_path = "/".join(path_split[0:dir_i + 3]) + "_"
-        link_str = "\\lngh{{{}}}{{{}}}{{{}}}{{{}}}".format(curr_type, this_path, ref_path, link_str)
+        link_str = "\\lngh{{{}}}{{{}}}{{{}}}".format(this_path, ref_path, "\\{}d/".format(curr_type) + link_str)
 
-        path_split_fmt.append("\\{}d/".format(curr_type) + link_str)
+        path_split_fmt.append(link_str)
 
 archives_link = "\\lngraw{{{}}}{{{}}}".format(path_split[0], "/")
 

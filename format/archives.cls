@@ -113,6 +113,11 @@
   \ln{#2}{\templntext}%
 }
 
+\newcommand\lnfmtnb[5][]{%
+  \def\templntext{\fmtlnnb[#1]{#3}{#4}{#5}}%
+  \ln{#2}{\templntext}%
+}
+
 % "local" reference link
 \newcommand\lnl[4][]{%
   \getrefnum{\currreference/#2/#3}{\refnum}%
@@ -140,11 +145,11 @@
 \def\getrefnum#1#2{\readcmd{cat \root/#1/metadata/refnum}{#2}}
 
 % "global" reference link
-\newcommand\lngh[5][]{%
-  \getrefnum{#3}{\refnum}%
-  \readcmd{cat \root/#3/metadata/refnum}{\refnum}%
-  \iffull\def\temp{#4}\else\getrelpathln{#3}{\temp}\fi%
-  \lnfmt[#1]{\temp}{#5}{\csname #2d\endcsname}{\refnum}%
+\newcommand\lngh[4][]{%
+  \getrefnum{#2}{\refnum}%
+  \readcmd{cat \root/#2/metadata/refnum}{\refnum}%
+  \iffull\def\temp{#3}\else\getrelpathln{#2}{\temp}\fi%
+  \lnfmtnb[#1]{\temp}{#4}{}{\refnum}%
 }
 
 \newcommand\lng[4][]{%
@@ -158,6 +163,10 @@
 \newcommand\reflng[4][]{\lng[#1]{#2}{#3}{#4}}
 \newcommand\mreflng[3][]{\lng[#1]{#2}{#3}{\enm{\ldots}}}
 \newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\ldots}}}
+
+\newcommand\fmtlnnb[4][]{%
+    ${\text{\tt{}#2}}^{\text{\tt{}[#4]}}$%
+}
 
 \newcommand\fmtln[4][]{%
   \ifthenelse{\equal{#1}{}}%
@@ -218,7 +227,7 @@
   \expandafter\gdef\expandafter\currrefnum\expandafter{\currrefnum}%
   \inheritdefs{\curr}%
   \hrule \nopagebreak%
-  \currrefnumfmt \hfill \currpathfmt\\\nopagebreak\vspace{-8pt}\nopagebreak%
+  \currrefnumfmt \hfill \currpathfmt\\\nopagebreak\vspace{-6pt}\nopagebreak%
 }%
 {
   \nopagebreak%
@@ -256,7 +265,7 @@
   \fi%
   }
 
-\def\gend#1{{\color{blue!90!black} #1}}
+\def\gend#1{{\color{blue} #1}}
 \def\proofd{\gend{P}}
 \def\noted{\gend{N}}
 \def\topicd{\gend{T}}
