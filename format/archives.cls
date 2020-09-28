@@ -165,7 +165,7 @@
 \newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\ldots}}}
 
 \newcommand\fmtlnnb[4][]{%
-    ${\text{\tt{}#2}}^{\text{\tt{}[#4]}}$%
+    ${\text{\tt{}#2}}^{\text{\tiny\tt{}[#4]}}$%
 }
 
 \newcommand\fmtln[4][]{%
@@ -227,7 +227,7 @@
   \expandafter\gdef\expandafter\currrefnum\expandafter{\currrefnum}%
   \inheritdefs{\curr}%
   \hrule \nopagebreak%
-  \currrefnumfmt \hfill \currpathfmt\\\nopagebreak\vspace{-6pt}\nopagebreak%
+  \currrefnumfmt \hfill \currpathfmt\\\nopagebreak\vspace{4pt}\nopagebreak%
 }%
 {
   \nopagebreak%
@@ -265,11 +265,11 @@
   \fi%
   }
 
-\def\gend#1{{\color{blue} #1}}
-\def\proofd{\gend{P}}
-\def\noted{\gend{N}}
-\def\topicd{\gend{T}}
-\def\definitiond{\gend{D}}
+\newcommand\gend[2][blue]{{\color{#1} #2}}
+\newcommand\proofd[1][blue]{\gend[#1]{P}}
+\newcommand\noted[1][blue]{\gend[#1]{N}}
+\newcommand\topicd[1][blue]{\gend[#1]{T}}
+\newcommand\definitiond[1][blue]{\gend[#1]{D}}
 
 \def\pathfmt#1{\readcmd{python \root/scripts/path_fmt.py "#1" "\iffull F\else N\fi"}{\temp}\temp}
 % ---
@@ -279,6 +279,7 @@
 {
   \begin{tcolorbox}[breakable, #1]
   \parskip=10pt
+  \raggedright
 }
 {
   \end{tcolorbox}
@@ -407,3 +408,5 @@
 \def\rellr #1 #2 #3 {\rellrf{#1}{#2}{#3}}
 \def\relis{\text{ is }}
 \def\defined{\text{defined}}
+
+\raggedright
