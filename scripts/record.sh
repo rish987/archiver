@@ -27,9 +27,6 @@ while true; do
                     echo "No record script ($RECORD_SCRIPT) found!"
                     break
                 else
-                    echo "recording in 3 seconds..."
-                    sleep 3
-                    echo "recording..."
                     mkdir -p $VIDEO_DIR
                     $RECORD_SCRIPT $VIDEO_DIR/$INDEX.mp4
                 fi
