@@ -50,7 +50,7 @@ preamble = ${BUILD_SOURCE_DIR}/${type}/preamble.tex
 ${OUTPUT_DIR}/tree/%/tree.pdf ${OUTPUT_DIR}/tree_online/%/tree_online.pdf ${OUTPUT_DIR}/defs/%/defs.pdf : $$(addprefix $${BUILD_SOURCE_DIR}/,$$(shell scripts/get_deps.sh $$* $${BASENAME})) $${WRAPPER} ${BUILD_SOURCE_DIR}/archives.cls ${BUILD_FORMAT} | ${BUILD_DIR} ${BUILD_SOURCE_DIR}
 	find ${BUILD_DIR} -maxdepth 1 -type f | xargs rm -f
 	m4 -Da_preamble="${preamble}" -Dinput_ref="$*" ${WRAPPER} > ${BUILD_DIR}/${BASENAME}.tex
-	cd ${BUILD_DIR} && pdflatex --halt-on-error --shell-escape ${BASENAME}.tex
+	cd ${BUILD_DIR} && latexmk --pdf --halt-on-error --shell-escape ${BASENAME}.tex
 	mkdir -p $(dir $@) && cp ${BUILD_DIR}/${BASENAME}.pdf $@
 
 ${OUTPUT_DIR}/full/%/full.pdf ${OUTPUT_DIR}/full_compact/%/full_compact.pdf: $$(call build_source_list,$$*) $${WRAPPER} ${BUILD_SOURCE_DIR}/archives.cls ${BUILD_FORMAT} | ${BUILD_DIR} ${OUTPUT_DIR} ${BUILD_SOURCE_DIR}

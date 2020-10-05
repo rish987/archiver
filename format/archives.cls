@@ -20,7 +20,9 @@
 \RequirePackage[pdftex, pdfborderstyle={/S/U/W 0}]{hyperref}
 \RequirePackage{catchfile}
 \RequirePackage{xifthen}
-\RequirePackage[top=0.5in, bottom=0.7in, left=1in, right=1in, includeheadfoot, headsep=20pt]{geometry}
+\RequirePackage[marginparwidth=5cm, top=0.5in, bottom=0.7in, left=1in, right=1in, includeheadfoot, headsep=20pt]{geometry}
+\RequirePackage{marginnote}
+\RequirePackage{lipsum}
 \setlength{\headheight}{17pt}
 
 \makeatletter
@@ -113,8 +115,8 @@
   \ln{#2}{\templntext}%
 }
 
-\newcommand\lnfmtnb[5][]{%
-  \def\templntext{\fmtlnnb[#1]{#3}{#4}{#5}}%
+\newcommand\lnfmtnb[4][]{%
+  \def\templntext{\fmtlnnb[#1]{#3}{#4}}%
   \ln{#2}{\templntext}%
 }
 
@@ -146,10 +148,8 @@
 
 % "global" reference link
 \newcommand\lngh[4][]{%
-  \getrefnum{#2}{\refnum}%
-  \readcmd{cat \root/#2/metadata/refnum}{\refnum}%
   \iffull\def\temp{#3}\else\getrelpathln{#2}{\temp}\fi%
-  \lnfmtnb[#1]{\temp}{#4}{}{\refnum}%
+  \lnfmtnb[#1]{\temp}{#4}{}%
 }
 
 \newcommand\lng[4][]{%
@@ -164,8 +164,8 @@
 \newcommand\mreflng[3][]{\lng[#1]{#2}{#3}{\enm{\ldots}}}
 \newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\ldots}}}
 
-\newcommand\fmtlnnb[4][]{%
-    ${\text{\tt{}#2}}^{\text{\tiny\tt{}[#4]}}$%
+\newcommand\fmtlnnb[3][]{%
+    ${\text{\tt{}#2}}$%
 }
 
 \newcommand\fmtln[4][]{%
@@ -224,6 +224,7 @@
   \getrefnum{\currreference}{\currrefnum}%
   \gdef\currrefnumfmt{\colorbox{__gray}{\tt [\currrefnum]}}
   %\setcounter{page}{1}%
+  \setcounter{refpart}{0}%
   \expandafter\gdef\expandafter\currrefnum\expandafter{\currrefnum}%
   \inheritdefs{\curr}%
   \hrule \nopagebreak%
@@ -235,6 +236,7 @@
   \vspace{10pt}
   \pagebreak[3]
 }
+\def\nrp{\stepcounter{refpart}\text{}\marginnote{\colorbox{__gray}{\tt [\currrefnum.\therefpart]}}}
 
 \def\refenvl#1#2#3{{\bnosp\inheritdefs{\curr/#1/#2}\enosp{}\renvtrue #3}}
 
@@ -408,5 +410,7 @@
 \def\rellr #1 #2 #3 {\rellrf{#1}{#2}{#3}}
 \def\relis{\text{ is }}
 \def\defined{\text{defined}}
+
+\newcounter{refpart}
 
 \raggedright
