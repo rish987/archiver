@@ -26,3 +26,7 @@ __*
 !/scripts/templates
 archives/*
 !/archives/demo
+videos/
+videos/*
+scripts/record_video.sh
+*.mp4
