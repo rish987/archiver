@@ -62,6 +62,7 @@
 \lnfalse
 
 % --- colors ---
+\definecolor{____gray}{rgb}{0.98, 0.98, 0.98}
 \definecolor{___gray}{rgb}{0.95, 0.95, 0.95}
 \definecolor{__gray}{rgb}{0.90, 0.90, 0.90}
 \definecolor{_gray}{rgb}{0.70, 0.70, 0.70}
@@ -236,7 +237,7 @@
   \vspace{10pt}
   \pagebreak[3]
 }
-\def\nrp{\stepcounter{refpart}\text{}\marginnote{\colorbox{__gray}{\tt [\currrefnum.\therefpart]}}}
+\def\nrp{\stepcounter{refpart}\edef\refpartname{\currrefnum.\therefpart}\text{}\hypertarget{\refpartname}{}\marginnote{\hyperlink{\refpartname}{\colorbox{____gray}{\tt \scriptsize [\refpartname]}}}}
 
 \def\refenvl#1#2#3{{\bnosp\inheritdefs{\curr/#1/#2}\enosp{}\renvtrue #3}}
 
