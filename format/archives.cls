@@ -220,13 +220,12 @@
   \iffull%
     \hypertarget{#1}{}%
   \fi%
-  \gdef\curr{\root/#1}%
-  \gdef\currpathfmt{\pathfmt{#1}}%
-  \getrefnum{\currreference}{\currrefnum}%
-  \gdef\currrefnumfmt{\colorbox{__gray}{\tt [\currrefnum]}}
+  \def\curr{\root/#1}%
+  \getrefnum{#1}{\currrefnum}%
+  \def\currpathfmt{\pathfmt{#1}}%
+  \def\currrefnumfmt{\refnumfmt{#1}}%
   %\setcounter{page}{1}%
   \setcounter{refpart}{0}%
-  \expandafter\gdef\expandafter\currrefnum\expandafter{\currrefnum}%
   \inheritdefs{\curr}%
   \hrule \nopagebreak%
   \currrefnumfmt \hfill \currpathfmt\\\nopagebreak\vspace{4pt}\nopagebreak%
@@ -237,7 +236,7 @@
   \vspace{10pt}
   \pagebreak[3]
 }
-\def\nrp{\stepcounter{refpart}\edef\refpartname{\currrefnum.\therefpart}\text{}\hypertarget{\refpartname}{}\marginnote{\hyperlink{\refpartname}{\colorbox{____gray}{\tt \scriptsize [\refpartname]}}}}
+\def\nrp{\stepcounter{refpart}\refpartnumfmt{\currreference}{\therefpart}}
 
 \def\refenvl#1#2#3{{\bnosp\inheritdefs{\curr/#1/#2}\enosp{}\renvtrue #3}}
 
@@ -275,6 +274,8 @@
 \newcommand\definitiond[1][blue]{\gend[#1]{D}}
 
 \def\pathfmt#1{\readcmd{python \root/scripts/path_fmt.py "#1" "\iffull F\else N\fi"}{\temp}\temp}
+\def\refnumfmt#1{\readcmd{\root/scripts/refnum_fmt.sh "#1"}{\temp}\temp}
+\def\refpartnumfmt#1#2{\readcmd{\root/scripts/refpartnum_fmt.sh "#1" "#2"}{\temp}\temp}
 % ---
 
 % --- boxes ---
