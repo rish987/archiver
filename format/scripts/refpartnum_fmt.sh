@@ -2,7 +2,7 @@
 REFPATH="src/$1"
 VIDEO_DIR="$REFPATH/metadata/video"
 
-STR="\\hyperlink{\\refpartname}{[\\refpartname]}"
+STR=""
 YT_FILE="$REFPATH/metadata/youtube"
 if [[ -f $YT_FILE ]]; then
   YT_ID=$(cat $YT_FILE)
@@ -25,9 +25,9 @@ if [[ -f $YT_FILE ]]; then
   TOTAL=$(echo $TOTAL | sed "s/\..*//g")
 
   if [[ $(( TOTAL > -1 )) == 1 ]]; then
-    STR="\\href{https://youtube.com/watch?v=${YT_ID}&feature=youtu.be&t=${TOTAL}}{${STR}\\color{red}->}"
+    STR="\\href{https://youtube.com/watch?v=${YT_ID}&feature=youtu.be&t=${TOTAL}}{\\color{red}>}"
   else
-    STR="\\href{https://youtube.com/watch?v=${YT_ID}}{${STR}\\color{red}->}"
+    STR="\\href{https://youtube.com/watch?v=${YT_ID}}{\\color{red}>}"
   fi
 fi
-echo "\\edef\\refpartname{\\currrefnum.\\therefpart}\\text{}\\hypertarget{\\refpartname}{}\\marginnote{\\colorbox{____gray}{\\tt \\scriptsize $STR}}"
+echo "\\edef\\refpartname{\\currrefnum.\\therefpart}\\text{}\\hypertarget{\\refpartname}{}\\marginnote{\\colorbox{__gray}{\\tt \\scriptsize \\hyperlink{\\refpartname}{[\\refpartname]}}\\ \\colorbox{__gray}{\\tt \\scriptsize $STR}}"
