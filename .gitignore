@@ -29,5 +29,6 @@ archives/*
 videos/
 videos/*
 scripts/record_video.sh
+scripts/play_video.sh
 *.mp4
 creds.pkl

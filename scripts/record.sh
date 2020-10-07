@@ -14,6 +14,7 @@ done
 
 VIDEO_DIR="$REFPATH/metadata/video/parts"
 RECORD_SCRIPT="scripts/record_video.sh"
+PLAY_SCRIPT="scripts/play_video.sh"
 
 while true; do
     echo -e "Part [$INDEX]"
@@ -48,7 +49,7 @@ while true; do
                 fi
                 ;;
             "play")
-                vlc $VIDEO_DIR/$INDEX.mp4
+                $PLAY_SCRIPT $VIDEO_DIR/$INDEX.mp4
                 ;;
             "quit")
                 exit 0
