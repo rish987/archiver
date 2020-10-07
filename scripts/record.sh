@@ -18,7 +18,7 @@ RECORD_SCRIPT="scripts/record_video.sh"
 while true; do
     echo -e "Part [$INDEX]"
 
-    select opt in "record" "next" "prev" "quit"
+    select opt in "record" "play" "prev" "next" "quit" 
     do
         case $opt in
             "record")
@@ -46,6 +46,9 @@ while true; do
                 else
                     echo "Reached first part!"
                 fi
+                ;;
+            "play")
+                vlc $VIDEO_DIR/$INDEX.mp4
                 ;;
             "quit")
                 exit 0
