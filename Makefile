@@ -64,11 +64,7 @@ ${BUILD_SOURCE_DIR}/% : $${PROJECTS_DIR}/$$(shell echo "$$@" | cut -d'/' -f3-) |
 	mkdir -p $(dir $@)
 	cp $< $(dir $@)
 
-${BUILD_SOURCE_DIR}/%.mp4 : $${PROJECTS_DIR}/$$(shell echo "$$@" | cut -d'/' -f3-) | ${BUILD_DIR}
-	mkdir -p $(dir $@)
-	ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $< > $@
-
-.PRECIOUS : ${BUILD_SOURCE_DIR}/% ${BUILD_SOURCE_DIR}/%.mp4
+.PRECIOUS : ${BUILD_SOURCE_DIR}/%
 
 ${BUILD_FORMAT} : $${FORMAT_DIR}/$$(shell echo "$$@" | cut -d'/' -f3-) | ${BUILD_DIR}
 	mkdir -p $(dir $@)

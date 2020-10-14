@@ -1,5 +1,6 @@
 set -e
 REFPATH="archives/$1"
+./scripts/open_video.sh $1
 NUM_RPS=$(( $(grep -Po '\\nrp' $REFPATH/ref.tex | wc -l) ))
 echo "$NUM_RPS reference parts found."
 
