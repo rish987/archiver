@@ -19,3 +19,5 @@ fi
 
 #python3 ./scripts/upload.py $1 $2
 ./scripts/upload_manual.sh $1
+
+./scripts/timestamps.sh $1

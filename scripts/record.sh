@@ -1,6 +1,9 @@
 set -e
-REFPATH="archives/$1"
-./scripts/open_video.sh $1
+
+REF=$1
+REFPATH="archives/$REF"
+REFNUM=`cat $REFPATH/metadata/refnum`
+
 NUM_RPS=$(( $(grep -Po '\\nrp' $REFPATH/ref.tex | wc -l) ))
 echo "$NUM_RPS reference parts found."
 
@@ -30,7 +33,7 @@ while true; do
                     break
                 else
                     mkdir -p $VIDEO_DIR
-                    $RECORD_SCRIPT $VIDEO_DIR/$INDEX.mp4
+                    $RECORD_SCRIPT "$REF" "$REFNUM.$INDEX" "$VIDEO_DIR/$INDEX.mp4"
                 fi
                 ;;
             "next")

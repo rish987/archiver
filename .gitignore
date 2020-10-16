@@ -31,5 +31,6 @@ videos/*
 scripts/record_video.sh
 scripts/play_video.sh
 scripts/open_video.sh
+scripts/close_video.sh
 *.mp4
 creds.pkl

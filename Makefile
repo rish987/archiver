@@ -7,7 +7,7 @@ PROJECTS := $(shell find ${PROJECTS_DIR} -maxdepth 1 -mindepth 1 -type d | cut -
 
 SHELL := /bin/bash
 
-source_list = $(shell cd ${PROJECTS_DIR} && find $(1) -type f -a \( ! -regex '.*/\..*' \))
+source_list = $(shell cd ${PROJECTS_DIR} && find $(1) -type f -a \( ! -regex '.*/\..*' \) -a \( ! -name '*.mp4' \))
 build_source_list = $(addprefix ${BUILD_SOURCE_DIR}/,$(call source_list,$(1)))
 
 get_dir_list = $(shell cd ${PROJECTS_DIR}/$(1) && { find ./ -type d \( -name "proof" -o -name "note" -o -name "topic" -o -name "definition" \) | xargs -i find "{}" -maxdepth 1 -mindepth 1 | cut -f2- -d/; })
