@@ -33,7 +33,7 @@ while true; do
                     break
                 else
                     mkdir -p $VIDEO_DIR
-                    $RECORD_SCRIPT "$REF" "$REFNUM.$INDEX" "$VIDEO_DIR/$INDEX.mp4"
+                    $RECORD_SCRIPT "$REF" "${REFNUM}x$INDEX" "$VIDEO_DIR/$INDEX.mp4"
                 fi
                 ;;
             "next")

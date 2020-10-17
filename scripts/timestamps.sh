@@ -5,7 +5,7 @@ VIDEO_DIR="$REFPATH/metadata/video"
 STR=""
 TIMESTAMP_FILE="$REFPATH/metadata/timestamps"
 
-NUM_PARTS=$(( `ls -l archives/archive/metadata/video/parts | wc -l` - 1 ))
+NUM_PARTS=$(( `ls -l $REFPATH/metadata/video/parts | wc -l` - 1 ))
 INDEX=$(( 1 ))
 TOTAL="0.0"
 
