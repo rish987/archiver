@@ -140,6 +140,11 @@ function SelHistWin(choice)
     edit `=g:window_buffers[winid][g:window_buffers_idx[winid]]`
 endfunction
 
+function Record()
+    let ref = trim(system("dirname `echo " . bufname("%") . "` | cut -d/ -f2-"))
+    exe "!./scripts/record.sh " . ref
+endfunction
+
 function FormatFilename(path)
     let ref = trim(system("dirname `echo " . a:path . "` | cut -d/ -f2-"))
     let filename = trim(system("basename `echo " . a:path . "`"))
@@ -189,6 +194,7 @@ function SaveHistWin()
 endfunction
 
 map <leader>f :call Followln()<CR>
+map <leader>r :call Record()<CR>
 map <leader>gf :call Followfile()<CR>
 map <leader>H :call Backln()<CR>
 map <leader>L :call Forwardln()<CR>
