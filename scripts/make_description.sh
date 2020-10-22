@@ -8,7 +8,7 @@ DESC_FILE="$VIDEO_DIR/desc"
 
 REFNUM=$(cat $REFPATH/metadata/refnum)
 
-NUM_RPS=$(( $(grep -Po '\\nrp' $REFPATH/ref.tex | wc -l) ))
+NUM_RPS=$(./scripts/get_num_rps.sh $1)
 echo "$NUM_RPS reference parts found."
 
 >$DESC_FILE

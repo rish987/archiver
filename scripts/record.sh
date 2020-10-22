@@ -4,10 +4,7 @@ REF=$1
 REFPATH="archives/$REF"
 REFNUM=`cat $REFPATH/metadata/refnum`
 
-NUM_RPS=$(( $(grep -Po '\\nrp' $REFPATH/ref.tex | wc -l) ))
-if [[ -d $REFPATH/parts ]]; then 
-    NUM_RPS=$(( NUM_RPS + $(grep -Po '\\nrp' $REFPATH/parts/*.tex | wc -l) ))
-fi
+NUM_RPS=$(./scripts/get_num_rps.sh $1)
 echo "$NUM_RPS reference parts found."
 
 INDEX=$(( 0 ))
