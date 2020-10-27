@@ -236,7 +236,7 @@
   \vspace{10pt}
   \pagebreak[3]
 }
-\def\nrp{\stepcounter{refpart}\refpartnumfmt{\currreference}{\therefpart}}
+\def\nrp #1 {\refpartnumfmt{\currreference}{#1}}
 
 \def\refenvl#1#2#3{{\bnosp\inheritdefs{\curr/#1/#2}\enosp{}\renvtrue #3}}
 

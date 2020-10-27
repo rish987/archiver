@@ -8,4 +8,4 @@ if [[ -f $YT_FILE ]]; then
     TOTAL=$(sed "${2}q;d" $TIMESTAMP_FILE)
     STR="\\ \\colorbox{__gray}{\\tt \\scriptsize \\href{https://youtube.com/watch?v=${YT_ID}&feature=youtu.be&t=${TOTAL}}{\\color{red}>}}"
 fi
-echo "\\edef\\refpartname{\\currrefnum x\\therefpart}\\text{}\\hypertarget{\\refpartname}{}\\marginnote{\\colorbox{__gray}{\\tt \\scriptsize \\hyperlink{\\refpartname}{[\\currrefnum.\\therefpart]}}$STR}"
+echo "\\edef\\refpartname{\\currrefnum x${2}}\\text{}\\hypertarget{\\refpartname}{}\\marginnote{\\colorbox{__gray}{\\tt \\scriptsize \\hyperlink{\\refpartname}{[\\currrefnum.${2}]}}$STR}"
