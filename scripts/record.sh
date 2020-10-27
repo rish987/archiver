@@ -46,7 +46,7 @@ while true; do
                 fi
                 ;;
             "next")
-                if [[ $(( INDEX + 1 <= NUM_RPS )) == 1 ]]; then
+                if [[ $(( INDEX + 1 < NUM_RPS )) == 1 ]]; then
                     INDEX=$(( INDEX + 1 ))
                     break
                 else
