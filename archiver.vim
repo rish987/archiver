@@ -140,13 +140,22 @@ function SelHistWin(choice)
     edit `=g:window_buffers[winid][g:window_buffers_idx[winid]]`
 endfunction
 
+function RefName(path)
+    return trim(system("dirname `echo " . a:path . "` | cut -d/ -f2-"))
+endfunction
+
+function NextRPN()
+    let ref = RefName(bufname("%"))
+    call setline(line('.'), getline(line('.')) . trim(system("./scripts/next_rpn.sh " . ref)))
+endfunction
+
 function Record()
-    let ref = trim(system("dirname `echo " . bufname("%") . "` | cut -d/ -f2-"))
+    let ref = RefName(bufname("%"))
     exe "!./scripts/record.sh " . ref
 endfunction
 
 function FormatFilename(path)
-    let ref = trim(system("dirname `echo " . a:path . "` | cut -d/ -f2-"))
+    let ref = RefName(bufname(a:path))
     let filename = trim(system("basename `echo " . a:path . "`"))
     return ref . " (" . filename . ")"
 endfunction
@@ -201,6 +210,7 @@ map <leader>L :call Forwardln()<CR>
 map <leader>c :call ChangeDef()<CR>
 map <leader>p :call FollowPDF("tree")<CR>
 map <leader>d :call FollowPDF("defs")<CR>
+map <leader>n o\nrp <Esc>:call NextRPN()<CR>
 map <leader>x :call SaveHist()<CR>
 map <leader>X :call SelHist()<CR>
 
