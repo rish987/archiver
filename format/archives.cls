@@ -123,20 +123,25 @@
 
 % "local" reference link
 \newcommand\lnl[4][]{%
-  \getrefnum{\currreference/#2/#3}{\refnum}%
-  \gdef\temppath{}%
-  \iffull%
-    \gdef\temppath{\currreference/#2/#3}%
-    \global\edef\templabel{\temppath_}%
-    \hypertarget{\templabel}{}%
+  \def\newreference{\currreference/#2/#3}%
+  \ifrenv%
+    \lng[#1]{#2}{\refenvcurrreference/#2/#3}{#4}%
   \else%
-    \ifonline%
-      \gdef\temppath{\currreference/#2/#3/tree_online.pdf}%
+    \getrefnum{\newreference}{\refnum}%
+    \gdef\temppath{}%
+    \iffull%
+      \gdef\temppath{\newreference}%
+      \global\edef\templabel{\temppath_}%
+      \hypertarget{\templabel}{}%
     \else%
-      \gdef\temppath{#2/#3/tree.pdf}%
+      \ifonline%
+        \gdef\temppath{\newreference/tree_online.pdf}%
+      \else%
+        \gdef\temppath{#2/#3/tree.pdf}%
+      \fi%
     \fi%
+    \lnfmt[#1]{\temppath}{#4}{\csname #2d\endcsname}{\refnum}%
   \fi%
-  \lnfmt[#1]{\temppath}{#4}{\csname #2d\endcsname}{\refnum}%
 }
 
 % "global" reference link
@@ -160,7 +165,7 @@
 }
 
 \newcommand\refln[4][]{\lnl[#1]{#2}{#3}{#4}}
-\newcommand\reflnenv[5][]{\lnl[#1]{#2}{#3}{#4}\refenvl{#2}{#3}{#5}}
+\newcommand\reflnenv[5][]{\lnl[#1]{#2}{#3}{#4}\refenvl{#2}{#3}{#5}}%
 \newcommand\reflng[4][]{\lng[#1]{#2}{#3}{#4}}
 \newcommand\mreflng[3][]{\lng[#1]{#2}{#3}{\enm{\ldots}}}
 \newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\ldots}}}
@@ -221,6 +226,7 @@
     \hypertarget{#1}{}%
   \fi%
   \def\curr{\root/#1}%
+  \edef\refenvcurrreference{\currreference}%
   \getrefnum{#1}{\currrefnum}%
   \def\currpathfmt{\pathfmt{#1}}%
   \def\currrefnumfmt{\refnumfmt{#1}}%
@@ -238,13 +244,14 @@
 }
 \def\nrp #1 {\refpartnumfmt{\currreference}{#1}}
 
-\def\refenvl#1#2#3{{\bnosp\inheritdefs{\curr/#1/#2}\enosp{}\renvtrue #3}}
+\def\initrefenv#1#2{\renvtrue\edef\refenvcurrreference{\refenvcurrreference/#1/#2}}
+\def\refenvl#1#2#3{{\initrefenv{#1}{#2}\bnosp\inheritdefs{\root/\refenvcurrreference}\enosp{}#3}}
 
 \newenvironment{refenv}[2]
 {%
-  \renvtrue%
   \bgroup%
-  \inheritdefs{\curr/#1/#2}%
+  \initrefenv{#1}{#2}%
+  \inheritdefs{\root/\refenvcurrreference}%
 }
 {%
   \egroup%
@@ -297,6 +304,16 @@
 }
 {
   \end{mytcb}
+}
+
+\newenvironment{justification}
+{
+  \begin{mytcb}[title={Justification.}, 
+    colbacktitle=___gray, coltitle=black, colback=white, colframe=gray!80!black,
+    arc=0.1mm, boxrule=0.5pt]
+}
+{
+    \end{mytcb}
 }
 
 \newenvironment{proof}
@@ -410,8 +427,6 @@
 \def\relr #1 #2 {\relrf{#1}{#2}}
 \def\relrg #1 #2 #3 {\relrgf{#1}{#2}{#3}}
 \def\rellr #1 #2 #3 {\rellrf{#1}{#2}{#3}}
-\def\relis{\text{ is }}
-\def\defined{\text{defined}}
 
 \newcounter{refpart}
 
