@@ -125,7 +125,7 @@
 \newcommand\lnl[4][]{%
   \def\newreference{\currreference/#2/#3}%
   \ifrenv%
-    \lng[#1]{#2}{\refenvcurrreference/#2/#3}{#4}%
+    \lng[#1]{\refenvcurrreference/#2/#3}{#4}%
   \else%
     \getrefnum{\newreference}{\refnum}%
     \gdef\temppath{}%
@@ -151,6 +151,7 @@
 }
 
 \def\getrefnum#1#2{\readcmd{cat \root/#1/metadata/refnum}{#2}}
+\def\getreftype#1#2{\readcmd{basename `dirname "\root/#1"`}{#2}}
 
 % "global" reference link
 \newcommand\lngh[4][]{%
@@ -158,16 +159,17 @@
   \lnfmtnb[#1]{\temp}{#4}{}%
 }
 
-\newcommand\lng[4][]{%
-  \getrefnum{#3}{\refnum}%
-  \iffull\def\temp{#3}\else\getrelpathln{#3}{\temp}\fi%
-  \lnfmt[#1]{\temp}{#4}{\csname #2d\endcsname}{\refnum}%
+\newcommand\lng[3][]{%
+  \getrefnum{#2}{\refnum}%
+  \getreftype{#2}{\reftype}%
+  \iffull\def\temp{#2}\else\getrelpathln{#2}{\temp}\fi%
+  \lnfmt[#1]{\temp}{#3}{\csname\reftype d\endcsname}{\refnum}%
 }
 
 \newcommand\refln[4][]{\lnl[#1]{#2}{#3}{#4}}
 \newcommand\reflnenv[5][]{\lnl[#1]{#2}{#3}{#4}\refenvl{#2}{#3}{#5}}%
-\newcommand\reflng[4][]{\lng[#1]{#2}{#3}{#4}}
-\newcommand\mreflng[3][]{\lng[#1]{#2}{#3}{\enm{\ldots}}}
+\newcommand\reflng[3][]{\lng[#1]{#2}{#3}}
+\newcommand\mreflng[2][]{\lng[#1]{#2}{\enm{\ldots}}}
 \newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\ldots}}}
 
 \newcommand\fmtlnnb[3][]{%
@@ -270,7 +272,12 @@
   \ifonline%
     \def#2{#1/tree_online.pdf}%
   \else%
-    \readcmd{python \root/scripts/relpathln.py "\curr" "\root/#1"}{#2}%
+    \ifcsname relpath#1\endcsname%
+      \edef#2{\csname relpath#1\endcsname}%
+    \else%
+      \readcmd{python \root/scripts/relpathln.py "\curr" "\root/#1"}{#2}%
+      \expandafter\expandafter\expandafter\gdef\expandafter\expandafter\csname relpath#1\endcsname\expandafter{#1}%
+    \fi%
   \fi%
   }
 
