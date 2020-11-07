@@ -276,7 +276,7 @@
       \edef#2{\csname relpath#1\endcsname}%
     \else%
       \readcmd{python \root/scripts/relpathln.py "\curr" "\root/#1"}{#2}%
-      \expandafter\expandafter\expandafter\gdef\expandafter\expandafter\csname relpath#1\endcsname\expandafter{#1}%
+      \expandafter\expandafter\expandafter\gdef\expandafter\expandafter\csname relpath#1\endcsname\expandafter{#2}%
     \fi%
   \fi%
   }
