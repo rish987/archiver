@@ -169,8 +169,8 @@
 \newcommand\refln[4][]{\lnl[#1]{#2}{#3}{#4}}
 \newcommand\reflnenv[5][]{\lnl[#1]{#2}{#3}{#4}\refenvl{#2}{#3}{#5}}%
 \newcommand\reflng[3][]{\lng[#1]{#2}{#3}}
-\newcommand\mreflng[2][]{\lng[#1]{#2}{\enm{\ldots}}}
-\newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\ldots}}}
+\newcommand\mreflng[2][]{\lng[#1]{#2}{\enm{{\color{gray} \ldots}}}}
+\newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\color{gray} \ldots}}}
 
 \newcommand\fmtlnnb[3][]{%
     ${\text{\tt{}#2}}$%
@@ -433,6 +433,7 @@
 \def\rell #1 #2 {\rellf{#1}{#2}}
 \def\relr #1 #2 {\relrf{#1}{#2}}
 \def\relrg #1 #2 #3 {\relrgf{#1}{#2}{#3}}
+\def\rellrg #1 #2 #3 #4 #5 {\rellrgf{#1}{#2}{#3}{#4}{#5}}
 \def\rellr #1 #2 #3 {\rellrf{#1}{#2}{#3}}
 
 \newcounter{refpart}
