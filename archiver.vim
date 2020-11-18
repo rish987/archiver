@@ -149,6 +149,28 @@ function NextRPN()
     call setline(line('.'), getline(line('.')) . trim(system("./scripts/next_rpn.sh " . ref)))
 endfunction
 
+function Make()
+    let ref = RefName(bufname("%"))
+    exe "!make output/tree/" . ref . "/tree.pdf"
+    silent call FollowPDF("tree")
+endfunction
+
+function Upload()
+    let ref = RefName(bufname("%"))
+    echo "Are you sure you want to upload?"
+    let choice = inputlist(['1. yes', '2. no'])
+    if choice == 1
+        if exists("g:client_secrets")
+            exe "!./scripts/combine_record.sh " . ref
+            exe "!./scripts/upload.sh " . ref . " " . g:client_secrets
+        else
+            echo "g:client_secrets undefined."
+        endif
+    else
+        echo "aborting upload..."
+    endif
+endfunction
+
 function Record()
     let ref = RefName(bufname("%"))
     exe "!./scripts/record.sh " . ref
@@ -211,6 +233,8 @@ map <leader>c :call ChangeDef()<CR>
 map <leader>p :call FollowPDF("tree")<CR>
 map <leader>d :call FollowPDF("defs")<CR>
 map <leader>n o\nrp <Esc>:call NextRPN()<CR>
+map <leader>m :call Make()<CR>
+map <leader>u :call Upload()<CR>
 map <leader>x :call SaveHist()<CR>
 map <leader>X :call SelHist()<CR>
 
