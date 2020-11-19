@@ -26,7 +26,7 @@ BUILD_WRAPPER_DIR := ${BUILD_SOURCE_DIR}/wrappers
 
 BUILD_WRAPPERS := $(addsuffix .m4,$(addprefix ${BUILD_WRAPPER_DIR}/,tree tree_online full full_compact defs))
 
-BUILD_FORMAT := $(addprefix ${BUILD_SOURCE_DIR}/scripts/,defs_inheritance.sh relpathln.py defs_inheritance.py refnum_fmt.sh refpartnum_fmt.sh path_fmt.py format_defs.sh) ${BUILD_SOURCE_DIR}/archives.cls
+BUILD_FORMAT := $(addprefix ${BUILD_SOURCE_DIR}/scripts/,defs_inheritance.sh relpathln.py defs_inheritance.py aux_format.sh refnum_fmt.sh refpartnum_fmt.sh path_fmt.py format_defs.sh) ${BUILD_SOURCE_DIR}/archives.cls
 
 #.PHONY : tree tree_online defs full full_compact archive/tree demo/tree archive/tree_online archive/tree_online demo/tree_online
 
@@ -66,6 +66,7 @@ ${OUTPUT_DIR}/full/%/full.pdf ${OUTPUT_DIR}/full_compact/%/full_compact.pdf: $$(
 ${BUILD_SOURCE_DIR}/% : $${PROJECTS_DIR}/$$(shell echo "$$@" | cut -d'/' -f3-) | ${BUILD_DIR}
 	mkdir -p $(dir $@)
 	cp $< $(dir $@)
+	stat $< -c'%Y' > $@.time
 
 .PRECIOUS : ${BUILD_SOURCE_DIR}/%
 

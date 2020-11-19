@@ -1,0 +1,28 @@
+key Tab Tab 
+sleep 1 
+key ctrl+v BackSpace 
+sleep 1 
+mousemove 1365 1390
+click 1
+sleep 1
+key Page_Down
+sleep 1 
+mousemove 540 1575
+click 1
+sleep 1
+mousemove 1380 1800
+click 1
+sleep 1 
+click 1
+sleep 1
+mousemove 590 1410
+click 1
+sleep 1
+mousemove 1380 1800
+click 1
+sleep 8
+mousemove 1170 1530
+click 1
+sleep 1
+click 1
+sleep 1

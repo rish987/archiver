@@ -8,15 +8,31 @@ YOUTUBE_FILE="$META_DIR/youtube"
 
 REFNUM=$(cat $REFPATH/metadata/refnum)
 
+if [[ -f $HOME/work/scripts/mouse_up.sh ]]; then
+    $HOME/work/scripts/mouse_up.sh
+fi
+
 pcmanfm $VIDEO_DIR
+sleep 2
 
 echo -n "[$REFNUM] $1" | xclip -sel c
 
-read -p "Title copied to clipboard. Enter to continue."
+WINID=`wmctrl -lG | grep -Po "(?<=^)\S*(?=.*Channel videos)"`
+echo WINID: $WINID
+
+xdotool windowactivate $WINID && xdotool scripts/upload_pre.xdt
+read -p "Drag video to browser. Enter to continue."
+#read -p "Title copied to clipboard. Enter to continue."
+xdotool windowactivate $WINID && xdotool key ctrl+v
+
+sleep 1
 
 cat $DESC_FILE | xclip -sel c
 
-read -p "Description copied to clipboard. Enter to continue."
+xdotool windowactivate $WINID && xdotool scripts/upload_post.xdt 
 
-read -p "Enter video link: "
+#read -p "Description copied to clipboard. Enter to continue."
+
+#read -p "Enter video link: "
+REPLY=`xclip -sel c -o`
 echo $REPLY | cut -f4 -d/ > $YOUTUBE_FILE

@@ -231,10 +231,16 @@
   \edef\refenvcurrreference{\currreference}%
   \getrefnum{#1}{\currrefnum}%
   \def\currpathfmt{\pathfmt{#1}}%
+  \def\currauxfmt{\auxfmt{#1}}%
   \def\currrefnumfmt{\refnumfmt{#1}}%
   %\setcounter{page}{1}%
   \setcounter{refpart}{0}%
   \inheritdefs{\curr}%
+  {\color{_gray} \hrule} \nopagebreak%
+  \currauxfmt
+  \vspace{5pt}
+  {\color{_gray} \hrule} \nopagebreak%
+  \vspace{5pt}
   \hrule \nopagebreak%
   \currrefnumfmt \hfill \currpathfmt\\\nopagebreak\vspace{4pt}\nopagebreak%
 }%
@@ -289,6 +295,7 @@
 
 \def\pathfmt#1{\readcmd{python \root/scripts/path_fmt.py "#1" "\iffull F\else N\fi"}{\temp}\temp}
 \def\refnumfmt#1{\readcmd{\root/scripts/refnum_fmt.sh "#1"}{\temp}\temp}
+\def\auxfmt#1{\readcmd{\root/scripts/aux_format.sh "#1"}{\temp}\temp}
 \def\refpartnumfmt#1#2{\readcmd{\root/scripts/refpartnum_fmt.sh "#1" "#2"}{\temp}\temp}
 % ---
 
