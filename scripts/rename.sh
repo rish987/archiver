@@ -23,7 +23,7 @@ done
 old_basename=$(basename $2)
 
 for file in $(grep -Irl "\/$old_basename\>" archives); do
-    vim $file -c "%s/\/$old_basename/\/$3/c"
+    vim $file -c "%s/\/$old_basename\\>/\/$3/c"
 done
 
 sed -i "s/refln{$TYPE}{$old_basename}/refln{$TYPE}{$3}/" $(dirname $(dirname $new_path))/ref.tex
