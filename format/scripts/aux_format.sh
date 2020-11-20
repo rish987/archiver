@@ -4,7 +4,7 @@ STR=""
 YT_FILE="src/$1/metadata/youtube"
 if [[ -f $YT_FILE ]]; then
   YT_ID=$(cat $YT_FILE)
-  STR="\\ \\colorbox{___gray}{\\tt \\href{https://youtube.com/watch?v=${YT_ID}}{\\color{red}>[${YT_ID/_/\\_}]}}"
+  STR="\\ \\colorbox{___gray}{\\tt \\href{https://youtube.com/watch?v=${YT_ID}}{\\color{red!80}>[${YT_ID/_/\\_}]}}"
 fi
 
 time_1=$(cat src/$1/ref.tex.time)
