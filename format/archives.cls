@@ -169,8 +169,9 @@
 \newcommand\refln[4][]{\lnl[#1]{#2}{#3}{#4}}
 \newcommand\reflnenv[5][]{\lnl[#1]{#2}{#3}{#4}\refenvl{#2}{#3}{#5}}%
 \newcommand\reflng[3][]{\lng[#1]{#2}{#3}}
-\newcommand\mreflng[2][]{\lng[#1]{#2}{\enm{{\color{gray} \ldots}}}}
-\newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\color{gray} \ldots}}}
+\def\mrefdots{{\color{gray} \ldots}}
+\newcommand\mreflng[2][]{\lng[#1]{#2}{\enm{\mrefdots}}}
+\newcommand\reflnm[3][]{\lnl[#1]{#2}{#3}{\enm{\mrefdots}}}
 
 \newcommand\fmtlnnb[3][]{%
     ${\text{\tt{}#2}}$%
