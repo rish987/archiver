@@ -447,3 +447,9 @@
 \newcounter{refpart}
 
 \raggedright
+
+\makeatletter
+\newcommand{\oset}[2]{%
+   {\operatorname*{#2}\limits^{\vbox to -.5\ex@{\kern-\tw@\ex@
+    \hbox{\scriptsize #1}\vss}}}}
+\makeatother
