@@ -125,11 +125,20 @@ endfunc
 function FollowPDF(type)
     let rpath = expand('%:h')
     let pdf = trim(system("./scripts/get_pdf.sh " . rpath . " " . a:type . " " . g:archive))
-    if exists("g:archives_pdf_cmd")
-        echo g:archives_pdf_cmd . " " . pdf . " &"
-        call system(g:archives_pdf_cmd . " " . pdf . " &")
+    if g:remote == 0
+        if exists("g:archives_pdf_cmd")
+            echo g:archives_pdf_cmd . " " . pdf . " &"
+            call system(g:archives_pdf_cmd . " " . pdf . " &")
+        else
+            echo "g:archives_pdf_cmd undefined."
+        endif
     else
-        echo "g:archives_pdf_cmd undefined."
+        if exists("g:remote_pdf_cmd")
+            echo g:remote_pdf_cmd . " " . pdf . " &"
+            call system(g:remote_pdf_cmd . " " . pdf . " &")
+        else
+            echo "g:remote_pdf_cmd undefined."
+        endif
     endif
 endfunction
 
@@ -224,6 +233,8 @@ function SaveHistWin()
     call add(g:hist_saved[winid],this_hist)
 endfunction
 
+let g:remote=0
+
 map <leader>f :call Followln()<CR>
 map <leader>r :call Record()<CR>
 map <leader>gf :call Followfile()<CR>
@@ -231,6 +242,7 @@ map <leader>H :call Backln()<CR>
 map <leader>L :call Forwardln()<CR>
 map <leader>c :call ChangeDef()<CR>
 map <leader>p :call FollowPDF("tree")<CR>
+map <leader>e :let g:remote = 1 - g:remote<CR>
 map <leader>d :call FollowPDF("defs")<CR>
 map <leader>n o\nrp <Esc>:call NextRPN()<CR>
 map <leader>m :call Make()<CR>
