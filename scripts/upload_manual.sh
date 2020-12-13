@@ -1,9 +1,10 @@
+set -e -o pipefail
 REFPATH="archives/$1"
 
 META_DIR="$REFPATH/metadata"
 VIDEO_DIR="$META_DIR/video"
 
-DESC_FILE="$VIDEO_DIR/desc"
+DESC_FILE="$META_DIR/desc"
 YOUTUBE_FILE="$META_DIR/youtube"
 
 REFNUM=$(cat $REFPATH/metadata/refnum)
