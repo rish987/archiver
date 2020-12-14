@@ -50,7 +50,7 @@ preamble = ${BUILD_SOURCE_DIR}/${type}/preamble.tex
 %/tree : | $$(shell scripts/get_tree.sh $$*)
 	@echo -n
 
-${OUTPUT_DIR}/tree/%/tree.pdf ${OUTPUT_DIR}/tree_online/%/tree_online.pdf ${OUTPUT_DIR}/defs/%/defs.pdf : $$(addprefix $${BUILD_SOURCE_DIR}/,$$(shell scripts/get_deps.sh $$* $${BASENAME})) $${WRAPPER} ${BUILD_SOURCE_DIR}/archives.cls ${BUILD_FORMAT} | ${BUILD_DIR} ${BUILD_SOURCE_DIR}
+${OUTPUT_DIR}/tree/%/tree.pdf ${OUTPUT_DIR}/tree_online/%/tree_online.pdf ${OUTPUT_DIR}/defs/%/defs.pdf : $$(addprefix $${BUILD_SOURCE_DIR}/,$$(shell scripts/get_deps.sh $$* $${BASENAME})) $${WRAPPER} ${BUILD_SOURCE_DIR}/archives.cls ${BUILD_FORMAT} | ${BUILD_DIR} ${BUILD_SOURCE_DIR} $$(addprefix $${BUILD_SOURCE_DIR}/,$$(shell scripts/get_aux_deps.sh $$* $${BASENAME}))
 	find ${BUILD_DIR} -maxdepth 1 -type f | xargs rm -f
 	m4 -Da_preamble="${preamble}" -Dinput_ref="$*" ${WRAPPER} > ${BUILD_DIR}/${BASENAME}.tex
 	cd ${BUILD_DIR} && latexmk --pdf --halt-on-error --shell-escape ${BASENAME}.tex
