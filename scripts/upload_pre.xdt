@@ -4,4 +4,4 @@ sleep 1.5
 mousemove 1800 1010 
 click 1 
 sleep 1.5
-mousemove 530 970
+mousemove 470 1000

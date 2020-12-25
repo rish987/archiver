@@ -18,7 +18,7 @@ sleep 2
 
 echo -n "[$REFNUM] $1" | xclip -sel c
 
-WINID=`wmctrl -lG | grep -Po "(?<=^)\S*(?=.*Channel videos)"`
+WINID=`wmctrl -lG | grep -Po "(?<=^)\S*(?=.*Channel content)"`
 echo WINID: $WINID
 
 xdotool windowactivate $WINID && xdotool scripts/upload_pre.xdt
@@ -37,3 +37,5 @@ xdotool windowactivate $WINID && xdotool scripts/upload_post.xdt
 #read -p "Enter video link: "
 REPLY=`xclip -sel c -o`
 echo $REPLY | cut -f4 -d/ > $YOUTUBE_FILE
+echo $REPLY | cut -f4 -d/
+sleep 2
